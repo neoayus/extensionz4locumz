@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "bigDoxx",
+  "version": "1.0",
+  "description": "Search selected text for Doximity Emergency Medicine profiles.",
+  "permissions": [
+    "contextMenus",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://www.google.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
