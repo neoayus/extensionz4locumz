@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "doxx2phoneBook",
+  "version": "1.0",
+  "description": "Look up selected doximity profile on USPhoneBook.",
+  "permissions": [
+    "contextMenus",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://www.usphonebook.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
