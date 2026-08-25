@@ -1,14 +1,15 @@
 {
   "manifest_version": 3,
-  "name": "doxx2phoneBook",
+  "name": "doxx2phone",
   "version": "1.0",
-  "description": "Look up selected doximity profile on USPhoneBook.",
+  "description": "Generate and copy USPhoneBook URLs from selected Doximity profile names..",
   "permissions": [
     "contextMenus",
-    "tabs"
+    "scripting",
+    "clipboardWrite"
   ],
   "host_permissions": [
-    "https://www.usphonebook.com/*"
+    "https://www.doximity.com/*"
   ],
   "background": {
     "service_worker": "background.js"

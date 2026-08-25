@@ -1,24 +1,20 @@
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "phoneLookup",
-    title: "US Phonebook Lookup: %s",
+    title: "copy phonebook url!",
     contexts: ["selection"],
   });
 });
 
-chrome.contextMenus.onClicked.addListener((info) => {
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId !== "phoneLookup") return;
 
   const selectedText = info.selectionText?.trim();
   if (!selectedText) return;
 
-  // Normalize non-breaking spaces.
   const text = selectedText.replace(/\u00A0/g, " ");
 
-  // -------------------------
-  // GET NAME
-  // Everything before " MD"
-  // -------------------------
+  // Get the doctor's name: everything before MD.
   const nameMatch = text.match(/^([\s\S]*?)\s+MD\b/i);
 
   if (!nameMatch) {
@@ -34,9 +30,7 @@ chrome.contextMenus.onClicked.addListener((info) => {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
-  // -------------------------
-  // GET CITY + STATE
-  // -------------------------
+  // Get City and State.
   const cleanText = text
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
     .replace(/\*\*/g, "");
@@ -59,13 +53,17 @@ chrome.contextMenus.onClicked.addListener((info) => {
 
   const state = locationMatch[2].toLowerCase();
 
-  // -------------------------
-  // BUILD URL
-  // -------------------------
   const phonebookUrl =
     `https://www.usphonebook.com/${name}/${state}/${city}`;
 
-  chrome.tabs.create({
-    url: phonebookUrl,
+  // Copy URL to clipboard from the active page.
+  await chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: async (url) => {
+      await navigator.clipboard.writeText(url);
+    },
+    args: [phonebookUrl],
   });
+
+  console.log("Copied:", phonebookUrl);
 });
