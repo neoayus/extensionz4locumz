@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "NPI Lookup",
+  "name": "npi-lookup",
   "version": "1.0",
   "description": "Search for selected text in the NPI Registry.",
   "permissions": ["contextMenus", "tabs"],

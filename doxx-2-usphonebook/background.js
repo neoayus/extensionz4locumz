@@ -1,13 +1,13 @@
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
-    id: "phoneLookup",
+    id: "doxximityName",
     title: "copy phonebook url!",
     contexts: ["selection"],
   });
 });
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-  if (info.menuItemId !== "phoneLookup") return;
+  if (info.menuItemId !== "doxximityName") return;
 
   const selectedText = info.selectionText?.trim();
   if (!selectedText) return;

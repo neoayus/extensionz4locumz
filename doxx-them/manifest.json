@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "bigDoxx",
+  "name": "doxx-them",
   "version": "1.0",
-  "description": "Search selected text for Doximity Emergency Medicine profiles.",
+  "description": "Search selected text (first and last name) for Doximity Emergency Medicine profiles.",
   "permissions": [
     "contextMenus",
     "tabs"

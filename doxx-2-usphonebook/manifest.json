@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "doxx2phone",
+  "name": "doxx-2-phonebook",
   "version": "1.0",
   "description": "Generate and copy USPhoneBook URLs from selected Doximity profile names..",
   "permissions": [

@@ -1,7 +1,7 @@
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "npiLookup",
-    title: "NPI Lookup: %s",
+    title: "NPI: %s",
     contexts: ["selection"],
   });
 });

@@ -1,13 +1,13 @@
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
-    id: "bigDoxx",
-    title: "Doximity Search: %s",
+    id: "doxx",
+    title: "Doximity Search: \"%s\"",
     contexts: ["selection"],
   });
 });
 
 chrome.contextMenus.onClicked.addListener((info) => {
-  if (info.menuItemId !== "bigDoxx") return;
+  if (info.menuItemId !== "doxx") return;
 
   const selectedText = info.selectionText?.trim();
   if (!selectedText) return;
