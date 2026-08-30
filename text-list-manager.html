@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Text List Manager</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      background: #f5f7fa;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #172033;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 38px;
+      margin: 0 0 30px;
+    }
+
+    /* =========================
+       ADD BOX
+    ========================= */
+
+    .add-box {
+      background: white;
+      border: 1px solid #dfe4ea;
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+      margin-bottom: 25px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    #textInput {
+      flex: 1;
+      height: 55px;
+      padding: 0 18px;
+      font-size: 18px;
+      border: 1px solid #ccd3dc;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    #textInput:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    #addButton {
+      height: 55px;
+      padding: 0 28px;
+      border: none;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    #addButton:hover {
+      background: #1d4ed8;
+    }
+
+    .helper {
+      margin: 15px 2px 0;
+      color: #687386;
+      font-size: 15px;
+    }
+
+    /* =========================
+       LIST BOX
+    ========================= */
+
+    .list-box {
+      background: white;
+      border: 1px solid #dfe4ea;
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .list-header h2 {
+      margin: 0;
+      font-size: 25px;
+    }
+
+    /* =========================
+       CLEAR BUTTON
+    ========================= */
+
+    #clearButton {
+      background: white;
+      color: #dc2626;
+      border: 1px solid #fca5a5;
+      border-radius: 7px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    #clearButton:hover {
+      background: #fef2f2;
+    }
+
+    /* =========================
+       LIST
+    ========================= */
+
+    .list {
+      border: 1px solid #e0e5eb;
+      border-radius: 9px;
+      overflow: hidden;
+    }
+
+    /* =========================
+       ROW
+
+       Select = LEFT
+       Text   = CENTER
+       Delete = RIGHT
+    ========================= */
+
+    .list-item {
+      display: flex;
+      align-items: center;
+      min-height: 70px;
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .list-item:last-child {
+      border-bottom: none;
+    }
+
+    /* =========================
+       SELECT BUTTON
+    ========================= */
+
+    .select-button {
+      flex-shrink: 0;
+
+      margin-left: 10px;
+      margin-right: 10px;
+
+      padding: 10px 18px;
+
+      background: white;
+      color: #2563eb;
+
+      border: 1px solid #2563eb;
+      border-radius: 7px;
+
+      font-size: 16px;
+      font-weight: 600;
+
+      cursor: pointer;
+
+      white-space: nowrap;
+    }
+
+    .select-button:hover {
+      background: #eff6ff;
+    }
+
+    .select-button:active {
+      background: #dbeafe;
+    }
+
+    /* =========================
+       TEXT
+    ========================= */
+
+    .item-text {
+      flex: 1;
+
+      padding: 18px 10px;
+
+      font-size: 20px;
+      line-height: 1.4;
+
+      word-break: break-word;
+
+      /*
+        Normal browser text selection.
+      */
+      user-select: text;
+
+      cursor: text;
+    }
+
+    /* =========================
+       DELETE BUTTON
+    ========================= */
+
+    .delete-button {
+      flex-shrink: 0;
+
+      margin-left: 10px;
+      margin-right: 10px;
+
+      padding: 10px 12px;
+
+      background: white;
+      color: #dc2626;
+
+      border: 1px solid #fca5a5;
+      border-radius: 7px;
+
+      font-size: 15px;
+
+      cursor: pointer;
+
+      white-space: nowrap;
+    }
+
+    .delete-button:hover {
+      background: #fef2f2;
+    }
+
+    /* =========================
+       EMPTY LIST
+    ========================= */
+
+    .empty {
+      text-align: center;
+      padding: 45px 20px;
+      color: #8a94a3;
+      font-size: 17px;
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 18px;
+      color: #687386;
+      font-size: 15px;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 700px) {
+
+      body {
+        padding: 20px 10px;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+
+      .input-row {
+        flex-direction: column;
+      }
+
+      #addButton {
+        width: 100%;
+      }
+
+      .item-text {
+        font-size: 17px;
+      }
+
+      .select-button {
+        margin-left: 6px;
+        margin-right: 6px;
+        padding: 9px 12px;
+      }
+
+      .delete-button {
+        margin-left: 6px;
+        margin-right: 6px;
+      }
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <div class="container">
+
+    <h1>Text List Manager</h1>
+
+
+    <!-- =========================
+         ADD TEXT
+    ========================= -->
+
+    <div class="add-box">
+
+      <div class="input-row">
+
+        <input
+          type="text"
+          id="textInput"
+          placeholder="Enter text here..."
+          autocomplete="off"
+        >
+
+        <button id="addButton">
+          Add
+        </button>
+
+      </div>
+
+      <div class="helper">
+        Type something and click Add to include it in the list.
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+         TEXT LIST
+    ========================= -->
+
+    <div class="list-box">
+
+      <div class="list-header">
+
+        <h2>Your Text List</h2>
+
+        <button id="clearButton">
+          Clear All
+        </button>
+
+      </div>
+
+
+      <div id="textList" class="list"></div>
+
+
+      <div class="footer-note">
+        Click Select to highlight the entire text of that row.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const textInput =
+      document.getElementById("textInput");
+
+    const addButton =
+      document.getElementById("addButton");
+
+    const textList =
+      document.getElementById("textList");
+
+    const clearButton =
+      document.getElementById("clearButton");
+
+
+    /* =========================
+       LOAD SAVED ITEMS
+    ========================= */
+
+    let items = [];
+
+    try {
+
+      const saved =
+        localStorage.getItem("textListItems");
+
+      if (saved) {
+        items = JSON.parse(saved);
+      }
+
+      if (!Array.isArray(items)) {
+        items = [];
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Could not load saved items:",
+        error
+      );
+
+      items = [];
+
+    }
+
+
+    /* =========================
+       SAVE ITEMS
+    ========================= */
+
+    function saveItems() {
+
+      try {
+
+        localStorage.setItem(
+          "textListItems",
+          JSON.stringify(items)
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Could not save items:",
+          error
+        );
+
+      }
+
+    }
+
+
+    /* =========================
+       SELECT ONLY THE TEXT
+    ========================= */
+
+    function selectText(element) {
+
+      const selection =
+        window.getSelection();
+
+      const range =
+        document.createRange();
+
+
+      /*
+        Select ONLY the contents
+        of the text element.
+      */
+
+      range.selectNodeContents(element);
+
+
+      /*
+        Remove any existing selection.
+      */
+
+      selection.removeAllRanges();
+
+
+      /*
+        Apply the selection.
+      */
+
+      selection.addRange(range);
+
+    }
+
+
+    /* =========================
+       RENDER LIST
+    ========================= */
+
+    function renderList() {
+
+      textList.innerHTML = "";
+
+
+      /* Empty list */
+
+      if (items.length === 0) {
+
+        const empty =
+          document.createElement("div");
+
+        empty.className = "empty";
+
+        empty.textContent =
+          "No text added yet.";
+
+        textList.appendChild(empty);
+
+        return;
+      }
+
+
+      /* Create each row */
+
+      items.forEach((text, index) => {
+
+        const row =
+          document.createElement("div");
+
+        row.className =
+          "list-item";
+
+
+        /* =====================
+           SELECT BUTTON
+        ===================== */
+
+        const selectButton =
+          document.createElement("button");
+
+        selectButton.className =
+          "select-button";
+
+        selectButton.textContent =
+          "Select";
+
+
+        /* =====================
+           TEXT
+        ===================== */
+
+        const textElement =
+          document.createElement("div");
+
+        textElement.className =
+          "item-text";
+
+        textElement.textContent =
+          text;
+
+
+        /* =====================
+           DELETE BUTTON
+        ===================== */
+
+        const deleteButton =
+          document.createElement("button");
+
+        deleteButton.className =
+          "delete-button";
+
+        deleteButton.textContent =
+          "Delete";
+
+
+        /*
+          SELECT BUTTON CLICK
+        */
+
+        selectButton.addEventListener(
+          "click",
+          function(event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            selectText(textElement);
+
+          }
+        );
+
+
+        /*
+          DELETE BUTTON CLICK
+        */
+
+        deleteButton.addEventListener(
+          "click",
+          function(event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+
+            items.splice(index, 1);
+
+            saveItems();
+
+            renderList();
+
+          }
+        );
+
+
+        /*
+          IMPORTANT ORDER:
+
+          SELECT → TEXT → DELETE
+        */
+
+        row.appendChild(
+          selectButton
+        );
+
+        row.appendChild(
+          textElement
+        );
+
+        row.appendChild(
+          deleteButton
+        );
+
+
+        textList.appendChild(
+          row
+        );
+
+      });
+
+    }
+
+
+    /* =========================
+       ADD ITEM
+    ========================= */
+
+    function addItem() {
+
+      const text =
+        textInput.value.trim();
+
+
+      if (!text) {
+
+        textInput.focus();
+
+        return;
+
+      }
+
+
+      items.push(text);
+
+      saveItems();
+
+      renderList();
+
+
+      /* Clear input */
+
+      textInput.value = "";
+
+
+      /* Focus input */
+
+      textInput.focus();
+
+    }
+
+
+    /* =========================
+       ADD BUTTON
+    ========================= */
+
+    addButton.addEventListener(
+      "click",
+      addItem
+    );
+
+
+    /* =========================
+       ENTER TO ADD
+    ========================= */
+
+    textInput.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (event.key === "Enter") {
+
+          event.preventDefault();
+
+          addItem();
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       CLEAR ALL
+    ========================= */
+
+    clearButton.addEventListener(
+      "click",
+      function() {
+
+        if (items.length === 0) {
+          return;
+        }
+
+
+        const confirmed =
+          confirm(
+            "Are you sure you want to delete all items?"
+          );
+
+
+        if (!confirmed) {
+          return;
+        }
+
+
+        items = [];
+
+        saveItems();
+
+        renderList();
+
+        textInput.focus();
+
+      }
+    );
+
+
+    /* =========================
+       INITIAL LOAD
+    ========================= */
+
+    renderList();
+
+  </script>
+
+</body>
+</html>
