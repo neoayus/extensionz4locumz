@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "mail-draft",
+  "version": "3.0.0",
+  "description": "Select a physician's last name and email and create a pre-filled Gmail compose while preserving Gmail's configured signature.",
+
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "storage",
+    "scripting"
+  ],
+
+  "host_permissions": [
+    "<all_urls>",
+    "https://mail.google.com/*"
+  ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "action": {
+    "default_title": "Create Locums Gmail Draft"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mail.google.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
+
